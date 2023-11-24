@@ -6,7 +6,7 @@ Membros
 
 * Gabriel Tiso
 * João Gabriel 
-* Luis Eduardo
+* Luiz Eduardo
 * Pedro Tiso 
 
 ---
@@ -78,9 +78,22 @@ my $answer = 42
 * Array: Representam uma lista de valores. São prefixados pelo símbolo `@`.
 
 ```perl
-@animals = ("camel", "llama", "cow");
-@numbers = (2, 3, 5);
-@mixed   = ("camel", 42, 1.23);
+my @animals = ("camel", "llama", "cow");
+my @numbers = (2, 3, 5);
+my @mixed   = ("camel", 42, 1.23);
+
+print "Original `mixed`: @mixed\n";
+@mixed[0] = "crab";
+
+print "Favorite animal: $animals[0]\n";
+print "Last number: $numbers[$#numbers]\n";
+print "Modified `mixed`: @mixed\n";
+```
+```bash
+Original `mixed`: camel 42 1.23
+Favorite animal: camel
+Last number: 5
+Modified `mixed`: crab 42 1.23
 ```
 
 --
@@ -89,11 +102,41 @@ my $answer = 42
 pelo símbolo `%`.
 
 ```perl
-%prices = (
-    apple => 1.59,
-    banana => 1.25,
-    watermelon => 5.45
-)
+my %sounds = (
+    cow => "mooooo",
+    duck => "quack",
+);
+
+$sounds{pig} = "oink";
+$sounds{sheep} = "baa";
+
+delete $sounds{sheep};
+
+while (my ($animal, $sound) = each %sounds) {
+    print "$animal makes $sound!\n";
+}
+```
+```bash
+pig makes oink!
+duck makes quack!
+cow makes mooooo!
+```
+
+--
+
+- Referências: valores escalares que se referem à arrays ou hashes.
+São criadas utilizando `\`
+
+```perl
+my @nums = (1, 2, 3);
+my $numsref = \@nums;
+
+print "Nums: @nums, Nums ref: $numsref\n";
+print "Second element: $numsref->[1]\n";
+```
+```bash
+Nums: 1 2 3, Nums ref: ARRAY(0x5629f411baf8)
+Second element: 2
 ```
 
 --- 
@@ -123,29 +166,35 @@ unless (condition) {
 
 --
 
-- Suas estruturas de repetição também são simples
+- Estruturas de repetição de simples entendimento.
+- `for`: similar à C: contém `(inicialização; condição; incremento)`
+- `foreach`: percorre uma lista, um array, ou até mesmo um hash
+- É uma boa prática prefixar variáveis dos loops com `my`
+
+--
 
 ```perl
-while (condition) {
-  ...
+for (my $i = 0; $i <= 10; $i++) {
+    print "$i...\n"; # Contagem de 0 -> 10
 }
 
-my $reps = 5;
-for my $i (0 .. $reps) {
-  print "index is $i";
+foreach my $i (reverse 0..10) {
+    print "$i...\n"; # Contagem regressiva
 }
 ```
 
-```perl
-# iterando sobre um array
-for my $element (@elements) {
-  print $element;
-}
+--
 
-# iterando sobre as chaves de um hash.
+```perl
+%hash = (dog => "lazy", fox => "quick");
 foreach my $key (keys %hash) {
-  print $key, ': ', $hash{$key}, "\n";
+    print "The $key is $hash{$key}.\n";
 }
+```
+
+```bash
+The fox is quick.
+The dog is lazy.
 ```
 
 ---
@@ -176,6 +225,63 @@ sub write_name_to_file {
 }
 
 write_name_to_file("Gabriel");
+```
+--
+
+- Utilizando a feature `'signatures'`, podemos declarar 
+parâmetros junto da definição da função
+
+```perl
+use feature 'signatures';
+
+sub soma($a, $b) {
+    return $a + $b;
+}
+
+print soma(4, 5);
+```
+
+--
+
+- Subrotinas podem retornar:
+    * Explicitamente utilizando `return`
+    * Implicitamente como o valor da última declaração executada.
+
+- Podemos utilizar a keyword `wantarray` para definir o contexto do retorno
+
+```perl
+sub ten {
+    return wantarray() ? (1 .. 10) : 10;
+}
+
+@ten = ten();          # (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+$ten = ten();          # 10
+($ten) = ten();        # (1)
+($one, $two) = ten();  # (1, 2)
+```
+
+--
+
+```perl
+sub fibonacci {
+    my ($n) = @_;
+    die "Number must be positive" if $n <= 0;
+    return 1 if $n <= 2;
+    return (fibonacci($n-1) + fibonacci($n-2));
+}
+
+foreach my $i (1..5) {
+    my $fib = fibonacci($i);
+    print "fibonacci($i) is $fib\n";
+}
+```
+
+```bash
+fibonacci(1) is 1
+fibonacci(2) is 1
+fibonacci(3) is 2
+fibonacci(4) is 3
+fibonacci(5) is 5
 ```
 
 ---
