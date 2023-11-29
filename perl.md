@@ -401,4 +401,13 @@ uma interface de banco de dados consistente, independente do banco de dados real
 
 ---
 
+- *Booking.com:*
+   Booking.com é conhecida por ser uma das maiores plataformas de reservas de hotéis online do mundo. Eles têm uma longa história de uso de Perl em seus sistemas, especialmente em ferramentas de automação e desenvolvimento interno.
+---
+
+- *Cisco:*
+   A Cisco, uma das maiores empresas de tecnologia do mundo, tem uma história de uso de Perl em diversas áreas, incluindo automação de rede e desenvolvimento interno.
+
+---
+
 ## Obrigado!
