@@ -303,7 +303,7 @@ expressão regular, podemos usar a seguinte sintaxe:
 "Hello World" =~ /World/;
 
 # Checa se o match não existe
-"Hello World" != /World/;
+"Hello World" !~ /World/;
 ```
 
 --
